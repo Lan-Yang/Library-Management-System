@@ -11,7 +11,7 @@
 <p>
 <?php
 	ini_set('display_errors', 'On');
-	require 'mwly_conn.php';
+	require 'mwly_conn.inc';
 	# $conn returned. Don't forget oci_close($conn) !!
 	$stmt = oci_parse($conn, "select * from library");
 	oci_execute($stmt, OCI_DEFAULT);

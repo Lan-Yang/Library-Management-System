@@ -1,10 +1,10 @@
 <?php
 
-if (!isset($_POST['name']))
+if (!isset($_POST['library_id']))
 	header("mwly_dbweb.php");
 
 session_start();
-$lib_name = $_POST["name"];
-echo "Welcome to $lib_name";
+$lib_id = $_POST['library_id'];
+echo "Welcome to $lib_id";
 
 ?>

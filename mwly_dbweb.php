@@ -14,7 +14,7 @@ require "mwly_conn.inc";
 </div>
 <div id = "content">
 	<p>select a library:</p>
-	<form name="input" action="mwly_guest.php" method="post">
+	<form name="input" action="mwly_search.php" method="post">
 		<select name="library_id">
 		<?php
 		$stmt = oci_parse($conn, "select * from library");

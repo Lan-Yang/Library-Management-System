@@ -34,13 +34,13 @@ echo "<h1>$library_name</h1>"
 ?>
 </div>
 <div id = "content2">
-	<form name="login" action="" method="post">
+	<form name="login" action="mwly_login_r" method="post">
 	log in:
-		<select>
+		<select name="login_as">
   		<option value="reader">reader</option>
   		<option value="librarian">librarian</option>
 		</select>
-		<input type="text" name="loginid" />
+		<input type="text" name="login_val" />
 		<input type="submit" value="Login" />
 	</form>
 </div>

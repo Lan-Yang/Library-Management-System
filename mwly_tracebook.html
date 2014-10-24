@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Management</title>
+	<title>BookTrace</title>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="classes.css">
 </head>
@@ -9,6 +9,13 @@
 <body>
 <div id = "banner">
 	<h1>Columbia University Library</h1>
+</div>
+<div id = "search">	
+	<form name="tracebook" action="" method="post">
+	Book id:
+		<input type="text" name="book" />
+		<input type="submit" value="submit" />
+	</form>
 </div>
 <div id = "navlist">
 	<h>PERSONAL INFO</h>
@@ -22,11 +29,11 @@
 		<td>1</td>
 	</tr>
 	</table>
+		<a href="mwly_management.html">check/return</a>
+	<br>
 		<a href="mwly_bookmanagement.html">add/delete book</a>
 	<br>
 		<a href="mwly_readermanagement.html">add/delete reader</a>
-	<br>
-		<a href="mwly_tracebook.html">trace book</a>
 	<br>
 		<a href="mwly_search.html">return</a>
 	<br>
@@ -34,32 +41,32 @@
 </div>
 <div id="result">
 <div id="displaytwo">
-	<h>CHECK OUT</h>
-	<form name="checkout" action="" method="post">
-		<table>
+	<h>CHECK OUT HISTORY</h>
+		<table class="gridtable">
 			<tr>
-				<td>book id:</td>
-				<td><input type="text" name="bookid" /></td>
-			</tr>
+				<td>trans id</td>
+				<td>reader id</td>
+				<td>time</td>
 			<tr>
-				<td>reader id:</td>
-				<td><input type="text" name="readerid" /></td>
+				<td>1</td>
+				<td>1</td>
+				<td>2014.9.30</td>
 			</tr>
 		</table>
-		<input type="submit" value="submit" />
-	</form>
 </div>
 <div id="displaytwo">
-	<h>RETURN</h>
-	<form name="return" action="" method="post">
-		<table>
+	<h>RETURN HISTORY</h>
+	<table class="gridtable">
 			<tr>
-				<td>book id:</td>
-				<td><input type="text" name="bookid" /></td>
+				<td>trans id</td>
+				<td>reader id</td>
+				<td>time</td>
+			<tr>
+				<td>2</td>
+				<td>1</td>
+				<td>2014.10.3</td>
 			</tr>
 		</table>
-		<input type="submit" value="submit" />
-	</form>
 </div>
 </div>
 </body>

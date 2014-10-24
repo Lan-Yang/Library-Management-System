@@ -3,29 +3,10 @@
 <?php
 ini_set('display_errors', 'On');
 session_start();
-if (!isset($_SESSION['library_id']) || empty($_SESSION['library_id'])) {
-	if (!isset($_POST['library_id']) || empty($_POST['library_id'])) {
-		header("Location: mwly_dbweb.php");
-	} else {
-		$lib_id = $_POST['library_id'];
-		$_SESSION['library_id'] = $lib_id;
-	}
-} else {
-	$lib_id = $_SESSION['library_id'];
-}
-// library name
-require 'mwly_conn.inc';
-if (!isset($_SESSION['library_name'])) {
-	$stmt = oci_parse($conn, "select library_name from library where 
-				library_id=$lib_id");
-	oci_execute($stmt, OCI_DEFAULT);
-	while ($res = oci_fetch_row($stmt))
-		$library_name = $res[0] ;
-	$_SESSION['library_name'] = $library_name;
-} else {
-	$library_name = $_SESSION['library_name'];
-}
+if (!isset($_SESSION['library_id']))
+	header("Location: mwly_dbweb.php");
 // reader info
+require 'mwly_conn.inc';
 if (!isset($_SESSION['reader_id']))
 	header("Location:mwly_search.php");
 $rinfo_k = array("id:", "name:", "gender:", "quota:");
@@ -50,7 +31,7 @@ while ($res = oci_fetch_row($stmt)) // user info
 
 <body>
 <div id = "banner">
-	<h1><?php echo "$library_name"?></h1>
+	<h1><?php echo $_SESSION['library_name']?></h1>
 </div>
 <div id = "navlist">
 	<h2>PERSONAL INFO</h2>

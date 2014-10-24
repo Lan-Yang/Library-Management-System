@@ -6,6 +6,7 @@ require "mwly_conn.inc";
 <head>
 	<title>Book Management System Main Frame</title>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="classes.css">
 </head>
 
 <body>
@@ -13,8 +14,8 @@ require "mwly_conn.inc";
 	<h1>Welcome to Book Management System</h1>
 </div>
 <div id = "content">
-	<p>select a library:</p>
 	<form name="input" action="mwly_guest.php" method="post">
+	SELECT LIBRARY:
 		<select name="library_id">
 		<?php
 		$stmt = oci_parse($conn, "select * from library");

@@ -6,6 +6,7 @@ require "mwly_conn.inc";
 <head>
 	<title>Book Management System Main Frame</title>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="classes.css">
 </head>
 
 <body>

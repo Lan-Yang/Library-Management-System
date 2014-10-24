@@ -54,7 +54,7 @@ if (!isset($_SESSION['library_name'])) {
 	if (isset($_SESSION['reader_id'])) {
 		echo "<h2>Welcome,<br>". $_SESSION['reader_name'] . "</h2>";
 	?>
-		<a href="mwly_dbweb.html">user info</a><br>
+		<a href="mwly_reader.php">user info</a><br>
 		<a href="mwly_login.php?action=logout">log out</a>
 	<?php
 	} else if (isset($_SESSION['librarian_id'])) {

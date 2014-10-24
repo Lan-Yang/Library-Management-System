@@ -1,0 +1,97 @@
+dt {
+	font-weight: bold;
+}
+
+#lec {
+	margin-bottom: 10px;
+	background-color: #F0F0FF;
+}
+
+body {
+	margin:10px 10px 0px 10px;
+	padding:0px;
+}
+#banner {
+	padding: 5px;
+	margin-bottom: 10px;
+	background-color: rgb(213, 219, 225);
+	Color: rgb(0, 100, 255);
+	text-align: center;
+}
+
+
+#navlist {
+	width: 20%;
+	float:left;
+	margin-top: 15px;
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	Color: rgb(64, 64, 64);
+	background-color: rgb(225,200,200);
+	padding-right: 5px;
+}
+
+#search {
+	margin-top: 15px;
+	width: 64%;
+	padding-right: 15px;
+	padding-left: 15px;
+	float: right;
+	padding-bottom: 10px;
+	text-align: left;
+}
+#list {
+	margin-top: 15px;
+	width: 59%;
+	padding-right: 15px;
+	padding-left: 15px;
+	float: left;
+	padding-bottom: 10px;
+}
+#result {
+	margin-top: 15px;
+	width: 75%;
+	padding-right: 15px;
+	padding-left: 15px;
+	float: right;
+	padding-bottom: 10px;
+	text-align: left;
+}
+#footer {
+	clear: both;
+	padding: 5px;
+	margin-top: 5px;
+	text-align: center;
+	font-size: x-small;
+}
+
+table.gridtable {
+	font-family: verdana,arial,times roman;
+	font-size:15px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	font-size:14px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+
+ul.reading {
+}
+table, th, td {
+					border: 0px solid black;
+}

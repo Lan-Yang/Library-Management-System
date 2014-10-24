@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Search&Login</title>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="classes.css">
+</head>
+
+<body>
+<div id = "banner">
+	<h1>Columbia University Library</h1>
+</div>
+<div id = "search">	
+	<form name="searchbook" action="" method="post">
+	SEARCH BOOK:
+		<select>
+  		<option value="title">title</option>
+  		<option value="ISBN number">ISBN</option>
+  		<option value="author">author</option>
+		</select>
+		<input type="text" name="book" />
+		<input type="submit" value="Search" />
+	</form>
+</div>
+<div id = "navlist">
+	<h>log in</h>
+	<form name="login" action="mwly_dbweb.html" method="post">
+		<select name = "loginas">
+  		<option value="reader">reader</option>
+  		<br>
+  		<option value="librarian">librarian</option>
+  		<br>
+		</select>
+		<input type="text" name="loginid" />
+		<br>
+		<input type="submit" value="Login" />
+	</form>
+	<br>
+	<h>Welcome! Meng Wang</h>
+	<br>
+		<a href="mwly_dbweb.html">user info</a>
+	<br>
+		<a href="mwly_dbweb.html">log out</a>
+	<br>
+		<a href="mwly_dbweb.html">management</a>
+	<br>
+		<a href="mwly_dbweb.html">log out</a>
+	</form>
+</div>
+<div id="result">
+	<table class="gridtable">
+		<tr>
+			<th>book id</th>
+			<th>title</th>
+			<th>author</th>
+			<th>call_no</th>
+			<th>pub_year</th>
+			<th>lang</th>
+			<th>status</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>ABC</td>
+			<td>WM</td>
+			<td>122</td>
+			<td>2003</td>
+			<td>English</td>
+			<td>on shelf</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

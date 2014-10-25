@@ -54,13 +54,47 @@ if (!isset($linfo_v))
 		<a href="mwly_login.php?action=logout">log out</a>
 </div>
 <div id="result">
+<?php
+if (isset($_POST['post-type'])) {
+	switch ($_POST['post-type']) {
+	case "add_reader":
+		if ($_POST['gender']=="M") $gender="M"; else $gender="F";
+		$sql = "insert into reader
+			values (
+			  (select max(reader_id)+1
+			   from reader), '".
+			  $_POST['reader_name']."', '".
+			  $gender."', '".
+			  $_POST['reader_quota']."');";
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_DEFAULT);
+		break;
+	case "del_reader":
+		$sql = "delete from reader 
+			where reader_id=".$_POST['reader_id'];
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_DEFAULT);
+		break;
+	case "search_reader":
+		$sql = "select * from reader 
+			where ".$_POST['search_by'];
+		if ($_POST['search_by']=='reader_id')
+			$sql .= "=".$_POST['search_val'];
+		else 
+			$sql .= " like '%".$_POST['search_val']."%'";
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_DEFAULT);
+		break;
+	}
+}
+?>
 <div id="displaytwo">
-	<h>ADD READER</h>
-	<form name="addreader" action="" method="post">
+	<h2>ADD READER</h2>
+	<form name="add_reader" action="" method="post">
 		<table>
 			<tr>
 				<td>name:</td>
-				<td><input type="text" name="readername" /></td>
+				<td><input type="text" name="reader_name" /></td>
 			</tr>
 			<tr>
 				<td>gender:</td>
@@ -68,50 +102,55 @@ if (!isset($linfo_v))
 			</tr>
 			<tr>
 				<td>quota:</td>
-				<td><input type="text" name="quota" /></td>
+				<td><input type="text" name="reader_quota" /></td>
 			</tr>
 		</table>
-		<input type="submit" value="submit" />
+		<button type="submit" name="post-type" value="add_reader">
+		Submit</button>
 	</form>
 </div>
 <div id="displaytwo">
-	<h>DELETE READER</h>
-	<form name="deletereader" action="" method="post">
+	<h2>DELETE READER</h2>
+	<form name="del_reader" action="" method="post">
 		<table>
 			<tr>
 				<td>reader id:</td>
-				<td><input type="text" name="readerid" /></td>
+				<td><input type="text" name="reader_id" /></td>
 			</tr>
 		</table>
-		<input type="submit" value="submit" />
+		<button type="submit" name="post-type" value="del_reader">
+		Submit</button>
 	</form>
 </div>
 </div>
-<div id = "search">	
-	<form name="searchreader" action="" method="post">
+<div id = "search">
+	<form name="search_reader" action="" method="post">
 	SEARCH READER:
-		<select>
-  		<option value="readerid">reader id</option>
-  		<option value="readername">reader name</option>
+		<select name="search_by">
+  		<option value="reader_id">reader id</option>
+  		<option value="reader_name">reader name</option>
 		</select>
-		<input type="text" name="reader" />
-		<input type="submit" value="Search" />
+		<input type="text" name="search_val" />
+		<button type="submit" name="post-type" value="search_reader">
+		Search</button>
 	</form>
 </div>
 <div id="result2">
 	<table class="gridtable">
 		<tr>
-			<th>id</th>
-			<th>name</th>
-			<th>gender</th>
-			<th>reader quota</th>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Gender</th>
+			<th>Quota</th>
 		</tr>
-		<tr>
-			<td>1</td>
-			<td>WM</td>
-			<td>M</td>
-			<td>10</td>
-		</tr>
+		<?php
+		while ($res=oci_fetch_row($stmt)) {
+			echo "<tr>";
+			foreach ($v as $res)
+				echo "<td>".$v."</td>";
+			echo "</tr>";
+		}
+		?>
 	</table>
 </div>
 </body>

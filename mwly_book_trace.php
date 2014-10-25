@@ -61,8 +61,11 @@ if (!isset($linfo_v))
 		<a href="mwly_login.php?action=logout">log out</a>
 </div>
 <div id="result">
+<?php
+
+?>
 <div id="displaytwo">
-	<h>CHECK OUT HISTORY</h>
+	<h2>CHECK OUT HISTORY</h2>
 		<table class="gridtable">
 			<tr>
 				<td>trans id</td>

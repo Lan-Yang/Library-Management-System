@@ -87,25 +87,42 @@ if (!isset($_SESSION['library_name'])) {
 if ((isset($_POST['search_by']) && !empty($_POST['search_by']))
 && (isset($_POST['search_val']) && !empty($_POST['search_val']))) {
 	echo "<tr>
-		<th>book id</th>
-		<th>title</th>
-		<th>author</th>
-		<th>call_no</th>
-		<th>pub_year</th>
-		<th>lang</th>
-		<th>status</th>
+		<th>ID</th>
+		<th>Title</th>
+		<th>Author</th>
+		<th>Call No.</th>
+		<th>Year</th>
+		<th>Language</th>
+		<th>Status</th>
 		</tr>";
 	$search_by = $_POST['search_by'];
 	$search_val = $_POST['search_val'];
-	$sql = "select * from book where $search_by like '%$search_val%'";
+	$sql = "SELECT book_id, title, author, call_no, pub_year, lang,
+		case when ctime<rtime then 'Available' 
+		    when ctime is null then 'Available'
+		    when ctime>rtime then 'Unavailable'
+		    when rtime is null then 'Unavailable'
+		    else 'N/A'
+		end as status
+		FROM ( select B.*,
+		       (select max(t.trans_time)
+			from check_out c, trans t
+			where c.book_id=B.book_id
+			  and c.trans_id=t.trans_id) as ctime, 
+		       (select max(t.trans_time)
+			from return_back r, trans t
+			where r.book_id=B.book_id
+			  and r.trans_id=t.trans_id) as rtime
+			FROM book B) B0
+		where $search_by like '%$search_val%'";
+	//echo $sql;
 	$stmt = oci_parse($conn, $sql);
 	oci_execute($stmt, OCI_DEFAULT);
 	while ($res = oci_fetch_row($stmt))
 	{
 		echo "<tr>" ;
-		for ($i=0; $i<6; $i++)
+		for ($i=0; $i<7; $i++)
 			echo "<td>$res[$i]</td>";
-		echo "<td><?=status?></td>";
 		echo "</tr>";
 	}
 	echo "</table>";

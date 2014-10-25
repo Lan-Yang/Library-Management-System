@@ -22,7 +22,7 @@ if (!isset($linfo_v))
 	header("Location:mwly_search.php");
 ?>
 <head>
-	<title>Management</title>
+	<title>ReaderManagement</title>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="classes.css">
 </head>
@@ -43,9 +43,9 @@ if (!isset($linfo_v))
 	}
 	?>
 	</table>
-		<a href="mwly_book_man.php">add/delete book</a>
+		<a href="mwly_book_io.php">check/return book</a>
 	<br>
-		<a href="mwly_reader_man.php">add/delete/find reader</a>
+		<a href="mwly_book_man.php">add/delete book</a>
 	<br>
 		<a href="mwly_book_trace.php">trace book</a>
 	<br>
@@ -55,13 +55,29 @@ if (!isset($linfo_v))
 </div>
 <div id="result">
 <div id="displaytwo">
-	<h2>CHECK OUT</h2>
-	<form name="checkout" action="" method="post">
+	<h>ADD READER</h>
+	<form name="addreader" action="" method="post">
 		<table>
 			<tr>
-				<td>book id:</td>
-				<td><input type="text" name="bookid" /></td>
+				<td>name:</td>
+				<td><input type="text" name="readername" /></td>
 			</tr>
+			<tr>
+				<td>gender:</td>
+				<td><input type="text" name="gender" /></td>
+			</tr>
+			<tr>
+				<td>quota:</td>
+				<td><input type="text" name="quota" /></td>
+			</tr>
+		</table>
+		<input type="submit" value="submit" />
+	</form>
+</div>
+<div id="displaytwo">
+	<h>DELETE READER</h>
+	<form name="deletereader" action="" method="post">
+		<table>
 			<tr>
 				<td>reader id:</td>
 				<td><input type="text" name="readerid" /></td>
@@ -70,18 +86,33 @@ if (!isset($linfo_v))
 		<input type="submit" value="submit" />
 	</form>
 </div>
-<div id="displaytwo">
-	<h2>RETURN</h2>
-	<form name="return" action="" method="post">
-		<table>
-			<tr>
-				<td>book id:</td>
-				<td><input type="text" name="bookid" /></td>
-			</tr>
-		</table>
-		<input type="submit" value="submit" />
+</div>
+<div id = "search">	
+	<form name="searchreader" action="" method="post">
+	SEARCH READER:
+		<select>
+  		<option value="readerid">reader id</option>
+  		<option value="readername">reader name</option>
+		</select>
+		<input type="text" name="reader" />
+		<input type="submit" value="Search" />
 	</form>
 </div>
+<div id="result2">
+	<table class="gridtable">
+		<tr>
+			<th>id</th>
+			<th>name</th>
+			<th>gender</th>
+			<th>reader quota</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>WM</td>
+			<td>M</td>
+			<td>10</td>
+		</tr>
+	</table>
 </div>
 </body>
 </html>

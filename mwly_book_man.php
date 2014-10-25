@@ -22,7 +22,7 @@ if (!isset($linfo_v))
 	header("Location:mwly_search.php");
 ?>
 <head>
-	<title>Management</title>
+	<title>Book Management</title>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="classes.css">
 </head>
@@ -43,7 +43,7 @@ if (!isset($linfo_v))
 	}
 	?>
 	</table>
-		<a href="mwly_book_man.php">add/delete book</a>
+		<a href="mwly_management.html">check/return</a>
 	<br>
 		<a href="mwly_reader_man.php">add/delete/find reader</a>
 	<br>
@@ -55,24 +55,40 @@ if (!isset($linfo_v))
 </div>
 <div id="result">
 <div id="displaytwo">
-	<h2>CHECK OUT</h2>
-	<form name="checkout" action="" method="post">
+	<h>ADD BOOK</h>
+	<form name="addbook" action="" method="post">
 		<table>
 			<tr>
-				<td>book id:</td>
-				<td><input type="text" name="bookid" /></td>
+				<td>title:</td>
+				<td><input type="text" name="title" /></td>
 			</tr>
 			<tr>
-				<td>reader id:</td>
-				<td><input type="text" name="readerid" /></td>
+				<td>author:</td>
+				<td><input type="text" name="author" /></td>
+			</tr>
+			<tr>
+				<td>call number:</td>
+				<td><input type="text" name="call_no" /></td>
+			</tr>
+			<tr>
+				<td>publish year:</td>
+				<td><input type="text" name="pub_year" /></td>
+			</tr>
+			<tr>
+				<td>language:</td>
+				<td><input type="text" name="lang" /></td>
+			</tr>
+			<tr>
+				<td>loan period:</td>
+				<td><input type="text" name="loan_period" /></td>
 			</tr>
 		</table>
 		<input type="submit" value="submit" />
 	</form>
 </div>
 <div id="displaytwo">
-	<h2>RETURN</h2>
-	<form name="return" action="" method="post">
+	<h>DELETE BOOK</h>
+	<form name="deletebook" action="" method="post">
 		<table>
 			<tr>
 				<td>book id:</td>

@@ -22,7 +22,7 @@ if (!isset($linfo_v))
 	header("Location:mwly_search.php");
 ?>
 <head>
-	<title>Management</title>
+	<title>BookTrace</title>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="classes.css">
 </head>
@@ -30,6 +30,13 @@ if (!isset($linfo_v))
 <body>
 <div id = "banner">
 	<h1><?php echo $_SESSION['library_name']?></h1>
+</div>
+<div id = "search">	
+	<form name="tracebook" action="" method="post">
+	Book id:
+		<input type="text" name="book" />
+		<input type="submit" value="submit" />
+	</form>
 </div>
 <div id = "navlist">
 	<h2>PERSONAL INFO</h2>
@@ -43,11 +50,11 @@ if (!isset($linfo_v))
 	}
 	?>
 	</table>
+		<a href="mwly_book_io.php">check/return book</a>
+	<br>
 		<a href="mwly_book_man.php">add/delete book</a>
 	<br>
 		<a href="mwly_reader_man.php">add/delete/find reader</a>
-	<br>
-		<a href="mwly_book_trace.php">trace book</a>
 	<br>
 		<a href="mwly_search.php">return</a>
 	<br>
@@ -55,32 +62,36 @@ if (!isset($linfo_v))
 </div>
 <div id="result">
 <div id="displaytwo">
-	<h2>CHECK OUT</h2>
-	<form name="checkout" action="" method="post">
-		<table>
+	<h>CHECK OUT HISTORY</h>
+		<table class="gridtable">
 			<tr>
-				<td>book id:</td>
-				<td><input type="text" name="bookid" /></td>
-			</tr>
+				<td>trans id</td>
+				<td>reader id</td>
+				<td>time</td>
+				<td>librarian id</td>
 			<tr>
-				<td>reader id:</td>
-				<td><input type="text" name="readerid" /></td>
+				<td>1</td>
+				<td>1</td>
+				<td>2014.9.30</td>
+				<td>1</td>
 			</tr>
 		</table>
-		<input type="submit" value="submit" />
-	</form>
 </div>
 <div id="displaytwo">
-	<h2>RETURN</h2>
-	<form name="return" action="" method="post">
-		<table>
+	<h>RETURN HISTORY</h>
+	<table class="gridtable">
 			<tr>
-				<td>book id:</td>
-				<td><input type="text" name="bookid" /></td>
+				<td>trans id</td>
+				<td>reader id</td>
+				<td>time</td>
+				<td>librarian id</td>
+			<tr>
+				<td>2</td>
+				<td>1</td>
+				<td>2014.10.3</td>
+				<td>1</td>
 			</tr>
 		</table>
-		<input type="submit" value="submit" />
-	</form>
 </div>
 </div>
 </body>

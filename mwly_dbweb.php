@@ -13,8 +13,8 @@ require "mwly_conn.inc";
 <div id = "banner">
 	<h1>Welcome to Book Management System</h1>
 </div>
-<div id = "content">
-	<p>select a library:</p>
+<div id = "list">
+	<h2>select a library:</h2>
 	<form name="input" action="mwly_search.php" method="post">
 		<select name="library_id">
 		<?php

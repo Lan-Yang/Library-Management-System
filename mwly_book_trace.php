@@ -94,7 +94,7 @@ if (isset($_POST['search_val']) && !empty($_POST['search_val'])) {
 		</table>
 </div>
 <div id="displaytwo">
-	<h>RETURN HISTORY</h>
+	<h2>RETURN HISTORY</h2>
 	<table class="gridtable">
 	<?php
 	if (isset($_POST['search_val']) && !empty($_POST['search_val'])) {

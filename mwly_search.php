@@ -125,7 +125,6 @@ if ((isset($_POST['search_by']) && !empty($_POST['search_by']))
 			echo "<td>$res[$i]</td>";
 		echo "</tr>";
 	}
-	echo "</table>";
 }
 ?>
 	</table>

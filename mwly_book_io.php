@@ -22,7 +22,7 @@ if (!isset($linfo_v))
 	header("Location:mwly_search.php");
 ?>
 <head>
-	<title>BookTrace</title>
+	<title>Management</title>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="classes.css">
 </head>
@@ -30,13 +30,6 @@ if (!isset($linfo_v))
 <body>
 <div id = "banner">
 	<h1><?php echo $_SESSION['library_name']?></h1>
-</div>
-<div id = "search">	
-	<form name="tracebook" action="" method="post">
-	Book id:
-		<input type="text" name="book" />
-		<input type="submit" value="submit" />
-	</form>
 </div>
 <div id = "navlist">
 	<h2>PERSONAL INFO</h2>
@@ -50,48 +43,44 @@ if (!isset($linfo_v))
 	}
 	?>
 	</table>
-		<a href="mwly_librarian.php">check/return book</a>
-	<br>
 		<a href="mwly_book_man.php">add/delete book</a>
 	<br>
-		<a href="mwly_reader_man.php">add/delete/find reader</a>
+		<a href="mwly_readermanagement.html">add/delete/find reader</a>
 	<br>
-		<a href="mwly_search.php">return</a>
+		<a href="mwly_tracebook.html">trace book</a>
 	<br>
-		<a href="mwly_login.php?action=logout">log out</a>
+		<a href="mwly_search.html">return</a>
+	<br>
+		<a href="mwly_dbweb.html">log out</a>
 </div>
 <div id="result">
 <div id="displaytwo">
-	<h>CHECK OUT HISTORY</h>
-		<table class="gridtable">
+	<h>CHECK OUT</h>
+	<form name="checkout" action="" method="post">
+		<table>
 			<tr>
-				<td>trans id</td>
-				<td>reader id</td>
-				<td>time</td>
-				<td>librarian id</td>
+				<td>book id:</td>
+				<td><input type="text" name="bookid" /></td>
+			</tr>
 			<tr>
-				<td>1</td>
-				<td>1</td>
-				<td>2014.9.30</td>
-				<td>1</td>
+				<td>reader id:</td>
+				<td><input type="text" name="readerid" /></td>
 			</tr>
 		</table>
+		<input type="submit" value="submit" />
+	</form>
 </div>
 <div id="displaytwo">
-	<h>RETURN HISTORY</h>
-	<table class="gridtable">
+	<h>RETURN</h>
+	<form name="return" action="" method="post">
+		<table>
 			<tr>
-				<td>trans id</td>
-				<td>reader id</td>
-				<td>time</td>
-				<td>librarian id</td>
-			<tr>
-				<td>2</td>
-				<td>1</td>
-				<td>2014.10.3</td>
-				<td>1</td>
+				<td>book id:</td>
+				<td><input type="text" name="bookid" /></td>
 			</tr>
 		</table>
+		<input type="submit" value="submit" />
+	</form>
 </div>
 </div>
 </body>

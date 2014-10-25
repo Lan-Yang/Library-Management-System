@@ -43,7 +43,7 @@ if (!isset($linfo_v))
 	}
 	?>
 	</table>
-		<a href="mwly_book_io.php">check/return book</a>
+		<a href="mwly_librarian.php">check/return book</a>
 	<br>
 		<a href="mwly_book_man.php">add/delete book</a>
 	<br>

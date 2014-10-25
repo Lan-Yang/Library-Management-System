@@ -3,6 +3,7 @@
 <?php
 ini_set('display_errors', 'On');
 session_start();
+$libraryid = $_SESSION['library_id'];
 if (!isset($_SESSION['library_id']))
 	header("Location: mwly_dbweb.php");
 // librarian info
@@ -54,10 +55,45 @@ if (!isset($linfo_v))
 		<a href="mwly_login.php?action=logout">log out</a>
 </div>
 <div id="result">
+<?php
+if (isset($_POST['post-type'])) {
+	switch ($_POST['post-type']) {
+	case "add_book":
+		$title = $_POST['title'];
+		$author = $_POST['author'];
+		$callno = $_POST['call_no'];
+		$puby = $_POST['pub_year'];
+		$lang = $_POST['lang'];
+		$lper = $_POST['loan_period'];
+		$sql = "insert into book
+			values (
+			  (select max(book_id)+1
+			   from book), 
+			   '$title',
+			   '$author',
+			   '$callno',
+			   $puby,
+			   '$lang',
+			   $lper,
+			   $libraryid)";
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		break;
+	case "del_book":
+		$sql = "delete from book 
+			where book_id=".$_POST['bookid'];
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		break;
+	}
+}
+?>
+
+
 <div id="displaytwo">
-	<h>ADD BOOK</h>
+	<h2>ADD BOOK</h2>
 	<form name="addbook" action="" method="post">
-		<table>
+		<table>		
 			<tr>
 				<td>title:</td>
 				<td><input type="text" name="title" /></td>
@@ -83,11 +119,12 @@ if (!isset($linfo_v))
 				<td><input type="text" name="loan_period" /></td>
 			</tr>
 		</table>
-		<input type="submit" value="submit" />
+		<button type="submit" name="post-type" value="add_book">
+		Submit</button>
 	</form>
 </div>
 <div id="displaytwo">
-	<h>DELETE BOOK</h>
+	<h2>DELETE BOOK</h2>
 	<form name="deletebook" action="" method="post">
 		<table>
 			<tr>
@@ -95,7 +132,8 @@ if (!isset($linfo_v))
 				<td><input type="text" name="bookid" /></td>
 			</tr>
 		</table>
-		<input type="submit" value="submit" />
+		<button type="submit" name="post-type" value="del_book">
+		Submit</button>
 	</form>
 </div>
 </div>

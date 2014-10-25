@@ -59,7 +59,7 @@ if (isset($_POST['post-type'])) {
 	switch ($_POST['post-type']) {
 	case "add_reader":
 		$name = $_POST['reader_name'];
-		if ($_POST['gender']=="M") $gender="M"; else $gender="F";
+		$gender= ($_POST['gender']=="M") ? "M" : "F";
 		$quota = $_POST['reader_quota'];
 		$sql = "insert into reader
 			values (

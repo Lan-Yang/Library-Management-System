@@ -54,6 +54,57 @@ if (!isset($linfo_v))
 		<a href="mwly_login.php?action=logout">log out</a>
 </div>
 <div id="result">
+<?php 
+if (isset($_POST['post-type'])) {
+	$bookid = $_POST['bookid'];
+	$lbrarian_id = $_SESSION['librarian_id'];
+	$stmt = oci_parse($conn, "select max(trans_id)+1 from trans");
+	oci_execute($stmt, OCI_DEFAULT);
+	while ($res = oci_fetch_row($stmt))
+		$transid = $res[0];
+	switch ($_POST['post-type']) {
+	case "checkout":
+		$readerid = $_POST['readerid'];
+		$sql = "insert into trans
+			values ($transid, SYSDATE, $lbrarian_id)";
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		$sql = "insert into check_out
+			values ($readerid, $bookid, $transid)";
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		break;
+	case "return":
+		$sql = "select v.reader_id, v.trans_time
+			from (select c.reader_id as reader_id, 
+				     t.trans_time as trans_time,
+				     max(t.trans_time) over() as l_trans_time
+			      from check_out c
+			      join trans t 
+			      on c.trans_id=t.trans_id
+			      where c.book_id=$bookid) v
+			where v.trans_time = v.l_trans_time";
+		echo $sql.'<br>';
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_DEFAULT);
+		while ($res = oci_fetch_row($stmt)) {
+			$readerid = $res[0];
+			$cktime = $res[1];
+		}
+		$sql = "insert into trans
+			values ($transid, SYSDATE, $lbrarian_id)";
+		echo $sql.'<br>';
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		$sql = "insert into return_back
+			values ($bookid, $transid, $readerid)";
+		echo $sql.'<br>';
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		break;
+	}
+}
+?>
 <div id="displaytwo">
 	<h2>CHECK OUT</h2>
 	<form name="checkout" action="" method="post">
@@ -67,7 +118,8 @@ if (!isset($linfo_v))
 				<td><input type="text" name="readerid" /></td>
 			</tr>
 		</table>
-		<input type="submit" value="submit" />
+		<button type="submit" name="post-type" value="checkout">
+		Submit</button>
 	</form>
 </div>
 <div id="displaytwo">
@@ -79,7 +131,8 @@ if (!isset($linfo_v))
 				<td><input type="text" name="bookid" /></td>
 			</tr>
 		</table>
-		<input type="submit" value="submit" />
+		<button type="submit" name="post-type" value="return">
+		Submit</button>
 	</form>
 </div>
 </div>

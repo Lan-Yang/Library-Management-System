@@ -32,9 +32,9 @@ if (!isset($linfo_v))
 	<h1><?php echo $_SESSION['library_name']?></h1>
 </div>
 <div id = "search">	
-	<form name="tracebook" action="" method="post">
+	<form name="tracebook" action="mwly_book_trace.php" method="post">
 	Book id:
-		<input type="text" name="book" />
+		<input type="text" name="search_val" />
 		<input type="submit" value="submit" />
 	</form>
 </div>
@@ -64,33 +64,58 @@ if (!isset($linfo_v))
 <div id="displaytwo">
 	<h>CHECK OUT HISTORY</h>
 		<table class="gridtable">
-			<tr>
+		<?php
+if (isset($_POST['search_val']) && !empty($_POST['search_val'])) {
+	echo "<tr>
 				<td>trans id</td>
 				<td>reader id</td>
 				<td>time</td>
 				<td>librarian id</td>
-			<tr>
-				<td>1</td>
-				<td>1</td>
-				<td>2014.9.30</td>
-				<td>1</td>
-			</tr>
+		</tr>";
+	$search_val = $_POST['search_val'];
+	$sql = "select c.trans_id, c.reader_id, t.trans_time, t.librarian_id
+					from check_out c, trans t
+					where c.book_id=$search_val and c.trans_id=t.trans_id";
+	//echo $sql;
+	$stmt = oci_parse($conn, $sql);
+	oci_execute($stmt, OCI_DEFAULT);
+	while ($res = oci_fetch_row($stmt))
+	{
+		echo "<tr>" ;
+		for ($i=0; $i<4; $i++)
+			echo "<td>$res[$i]</td>";
+		echo "</tr>";
+	}
+}
+?>
 		</table>
 </div>
 <div id="displaytwo">
 	<h>RETURN HISTORY</h>
 	<table class="gridtable">
-			<tr>
+	<?php
+	if (isset($_POST['search_val']) && !empty($_POST['search_val'])) {
+	echo "<tr>
 				<td>trans id</td>
 				<td>reader id</td>
 				<td>time</td>
 				<td>librarian id</td>
-			<tr>
-				<td>2</td>
-				<td>1</td>
-				<td>2014.10.3</td>
-				<td>1</td>
-			</tr>
+		</tr>";
+	$sql = "select r.trans_id, r.reader_id, t.trans_time, t.librarian_id
+					from return_back r, trans t
+					where r.book_id=$search_val and r.trans_id=t.trans_id";
+	//echo $sql;
+	$stmt = oci_parse($conn, $sql);
+	oci_execute($stmt, OCI_DEFAULT);
+	while ($res = oci_fetch_row($stmt))
+	{
+		echo "<tr>" ;
+		for ($i=0; $i<4; $i++)
+			echo "<td>$res[$i]</td>";
+		echo "</tr>";
+	}
+	}
+?>
 		</table>
 </div>
 </div>

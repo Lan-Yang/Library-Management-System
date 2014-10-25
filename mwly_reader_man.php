@@ -58,22 +58,22 @@ if (!isset($linfo_v))
 if (isset($_POST['post-type'])) {
 	switch ($_POST['post-type']) {
 	case "add_reader":
+		$name = $_POST['reader_name'];
 		if ($_POST['gender']=="M") $gender="M"; else $gender="F";
+		$quota = $_POST['reader_quota'];
 		$sql = "insert into reader
 			values (
 			  (select max(reader_id)+1
-			   from reader), '".
-			  $_POST['reader_name']."', '".
-			  $gender."', '".
-			  $_POST['reader_quota']."');";
+			   from reader), '$name',
+			   '$gender', $quota)";
 		$stmt = oci_parse($conn, $sql);
-		oci_execute($stmt, OCI_DEFAULT);
+		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
 		break;
 	case "del_reader":
 		$sql = "delete from reader 
 			where reader_id=".$_POST['reader_id'];
 		$stmt = oci_parse($conn, $sql);
-		oci_execute($stmt, OCI_DEFAULT);
+		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
 		break;
 	case "search_reader":
 		$sql = "select * from reader 
@@ -84,6 +84,7 @@ if (isset($_POST['post-type'])) {
 			$sql .= " like '%".$_POST['search_val']."%'";
 		$stmt = oci_parse($conn, $sql);
 		oci_execute($stmt, OCI_DEFAULT);
+		$seach_flag = 1;
 		break;
 	}
 }
@@ -144,11 +145,13 @@ if (isset($_POST['post-type'])) {
 			<th>Quota</th>
 		</tr>
 		<?php
-		while ($res=oci_fetch_row($stmt)) {
-			echo "<tr>";
-			foreach ($v as $res)
-				echo "<td>".$v."</td>";
-			echo "</tr>";
+		if (isset($seach_flag)) {
+			while ($res=oci_fetch_row($stmt)) {
+				echo "<tr>";
+				foreach ($res as $v)
+					echo "<td>".$v."</td>";
+				echo "</tr>";
+			}
 		}
 		?>
 	</table>

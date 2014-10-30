@@ -57,25 +57,6 @@ else
 <?php
 if (isset($_POST['post-type'])) {
 	switch ($_POST['post-type']) {
-	case "add_reader":
-		$name = trim($_POST['reader_name']);
-		$gender = ($_POST['gender']=="M") ? "M" : "F";
-		$quota = intval($_POST['reader_quota']);
-		$sql = "insert into reader
-			values (
-			  (select max(reader_id)+1
-			   from reader), '$name',
-			   '$gender', $quota)";
-		$stmt = oci_parse($conn, $sql);
-		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
-		break;
-	case "del_reader":
-		$readerid = intval($_POST['reader_id']);
-		$sql = "delete from reader 
-			where reader_id=$readerid";
-		$stmt = oci_parse($conn, $sql);
-		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
-		break;
 	case "search_reader":
 		$sql = "select * from reader 
 			where ".$_POST['search_by'];
@@ -92,7 +73,7 @@ if (isset($_POST['post-type'])) {
 ?>
 <div id="displaytwo">
 	<h2>ADD READER</h2>
-	<form name="add_reader" action="" method="post">
+	<form name="add_reader" action="mwly_reader_ad.back.php" method="post">
 		<table>
 			<tr>
 				<td>name:</td>
@@ -100,7 +81,13 @@ if (isset($_POST['post-type'])) {
 			</tr>
 			<tr>
 				<td>gender:</td>
-				<td><input type="text" name="gender" /></td>
+				<td>
+				<select name="gender">
+					<option value="M">M</option>
+					<option value="F">F</option>
+				</select>
+				</td>
+				<!-- <td><input type="text" name="gender" /></td> -->
 			</tr>
 			<tr>
 				<td>quota:</td>
@@ -113,7 +100,7 @@ if (isset($_POST['post-type'])) {
 </div>
 <div id="displaytwo">
 	<h2>DELETE READER</h2>
-	<form name="del_reader" action="" method="post">
+	<form name="del_reader" action="mwly_reader_ad.back.php" method="post">
 		<table>
 			<tr>
 				<td>reader id:</td>

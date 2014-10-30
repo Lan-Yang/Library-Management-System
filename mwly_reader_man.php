@@ -16,9 +16,9 @@ $sql = "select * from librarian
 //echo $sql;
 $stmt = oci_parse($conn, $sql);
 oci_execute($stmt, OCI_DEFAULT);
-while ($res = oci_fetch_row($stmt))
+if ($res = oci_fetch_row($stmt))
 	$linfo_v = $res;
-if (!isset($linfo_v))
+else
 	header("Location:mwly_search.php");
 ?>
 <head>
@@ -58,9 +58,9 @@ if (!isset($linfo_v))
 if (isset($_POST['post-type'])) {
 	switch ($_POST['post-type']) {
 	case "add_reader":
-		$name = $_POST['reader_name'];
-		$gender= ($_POST['gender']=="M") ? "M" : "F";
-		$quota = $_POST['reader_quota'];
+		$name = trim($_POST['reader_name']);
+		$gender = ($_POST['gender']=="M") ? "M" : "F";
+		$quota = intval($_POST['reader_quota']);
 		$sql = "insert into reader
 			values (
 			  (select max(reader_id)+1
@@ -70,8 +70,9 @@ if (isset($_POST['post-type'])) {
 		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
 		break;
 	case "del_reader":
+		$readerid = intval($_POST['reader_id']);
 		$sql = "delete from reader 
-			where reader_id=".$_POST['reader_id'];
+			where reader_id=$readerid";
 		$stmt = oci_parse($conn, $sql);
 		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
 		break;
@@ -79,9 +80,9 @@ if (isset($_POST['post-type'])) {
 		$sql = "select * from reader 
 			where ".$_POST['search_by'];
 		if ($_POST['search_by']=='reader_id')
-			$sql .= "=".$_POST['search_val'];
-		else 
-			$sql .= " like '%".$_POST['search_val']."%'";
+			$sql .= "=".intval($_POST['search_val']);
+		else
+			$sql .= " like '%".trim($_POST['search_val'])."%'";
 		$stmt = oci_parse($conn, $sql);
 		oci_execute($stmt, OCI_DEFAULT);
 		$seach_flag = 1;

@@ -17,9 +17,9 @@ $sql = "select * from librarian
 //echo $sql;
 $stmt = oci_parse($conn, $sql);
 oci_execute($stmt, OCI_DEFAULT);
-while ($res = oci_fetch_row($stmt))
+if ($res = oci_fetch_row($stmt))
 	$linfo_v = $res;
-if (!isset($linfo_v))
+else
 	header("Location:mwly_search.php");
 ?>
 <head>
@@ -59,31 +59,37 @@ if (!isset($linfo_v))
 if (isset($_POST['post-type'])) {
 	switch ($_POST['post-type']) {
 	case "add_book":
-		$title = $_POST['title'];
-		$author = $_POST['author'];
-		$callno = $_POST['call_no'];
-		$puby = $_POST['pub_year'];
-		$lang = $_POST['lang'];
-		$lper = $_POST['loan_period'];
-		$sql = "insert into book
-			values (
-			  (select max(book_id)+1
-			   from book), 
-			   '$title',
-			   '$author',
-			   '$callno',
-			   $puby,
-			   '$lang',
-			   $lper,
-			   $libraryid)";
-		$stmt = oci_parse($conn, $sql);
-		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		$title = trim($_POST['title']);
+		$author = trim($_POST['author']);
+		$callno = trim($_POST['call_no']);
+		$puby = intval($_POST['pub_year']);
+		$puby = $puby == 0 ? "" : $puby ;
+		$lang = trim($_POST['lang']);
+		$lper = intval($_POST['loan_period']);
+		if (!empty($title) && ($lper > 0) && !empty($lang)) {
+			$sql = "insert into book
+				values (
+				  (select max(book_id)+1
+				   from book), 
+				   '$title',
+				   '$author',
+				   '$callno',
+				   $puby,
+				   '$lang',
+				   $lper,
+				   $libraryid)";
+			$stmt = oci_parse($conn, $sql);
+			oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		}
 		break;
 	case "del_book":
-		$sql = "delete from book 
-			where book_id=".$_POST['bookid'];
-		$stmt = oci_parse($conn, $sql);
-		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		$bookid = intval($_POST['bookid']);
+		if ($bookid > 0) {
+			$sql = "delete from book 
+				where book_id=$bookid";
+			$stmt = oci_parse($conn, $sql);
+			oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		}
 		break;
 	}
 }

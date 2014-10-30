@@ -66,8 +66,8 @@ if (!isset($linfo_v))
 ?>
 <div id="displaytwo">
 	<h2>CHECK OUT HISTORY</h2>
-		<table class="gridtable">
-		<?php
+	<table class="gridtable">
+<?php
 if (isset($_POST['search_val']) && !empty($_POST['search_val'])) {
 	echo "<tr>
 				<td>trans id</td>
@@ -75,10 +75,12 @@ if (isset($_POST['search_val']) && !empty($_POST['search_val'])) {
 				<td>time</td>
 				<td>librarian id</td>
 		</tr>";
-	$search_val = $_POST['search_val'];
-	$sql = "select c.trans_id, c.reader_id, t.trans_time, t.librarian_id
-					from check_out c, trans t
-					where c.book_id=$search_val and c.trans_id=t.trans_id";
+	$search_val = intval($_POST['search_val']);
+	$sql = "select c.trans_id, c.reader_id, 
+		TO_CHAR(t.trans_time, 'MM/DD/YYYY HH24:MI:SS'), t.librarian_id
+		from check_out c, trans t
+		where c.book_id=$search_val and c.trans_id=t.trans_id
+		order by t.trans_time";
 	//echo $sql;
 	$stmt = oci_parse($conn, $sql);
 	oci_execute($stmt, OCI_DEFAULT);
@@ -91,22 +93,25 @@ if (isset($_POST['search_val']) && !empty($_POST['search_val'])) {
 	}
 }
 ?>
-		</table>
+	</table>
 </div>
 <div id="displaytwo">
 	<h2>RETURN HISTORY</h2>
 	<table class="gridtable">
-	<?php
-	if (isset($_POST['search_val']) && !empty($_POST['search_val'])) {
+<?php
+if (isset($_POST['search_val']) && !empty($_POST['search_val'])) {
 	echo "<tr>
 				<td>trans id</td>
 				<td>reader id</td>
 				<td>time</td>
 				<td>librarian id</td>
 		</tr>";
-	$sql = "select r.trans_id, r.reader_id, t.trans_time, t.librarian_id
-					from return_back r, trans t
-					where r.book_id=$search_val and r.trans_id=t.trans_id";
+	$search_val = intval($_POST['search_val']);
+	$sql = "select r.trans_id, r.reader_id, 
+		TO_CHAR(t.trans_time, 'MM/DD/YYYY HH24:MI:SS'), t.librarian_id
+		from return_back r, trans t
+		where r.book_id=$search_val and r.trans_id=t.trans_id
+		order by t.trans_time";
 	//echo $sql;
 	$stmt = oci_parse($conn, $sql);
 	oci_execute($stmt, OCI_DEFAULT);
@@ -117,9 +122,9 @@ if (isset($_POST['search_val']) && !empty($_POST['search_val'])) {
 			echo "<td>$res[$i]</td>";
 		echo "</tr>";
 	}
-	}
+}
 ?>
-		</table>
+	</table>
 </div>
 </div>
 </body>

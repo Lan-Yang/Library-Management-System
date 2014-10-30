@@ -49,18 +49,18 @@ $_SESSION['library_name'] = $library_name;
 		echo "<h2>Welcome,<br>".$_SESSION['reader_name']."</h2>";
 	?>
 		<a href="mwly_reader.php">user info</a><br>
-		<a href="mwly_login.php?action=logout">log out</a>
+		<a href="mwly_login.back.php?action=logout">log out</a>
 	<?php
 	} else if (isset($_SESSION['librarian_id'])) {
 		echo "<h2>Welcome,<br>".$_SESSION['librarian_name']."</h2>";
 	?>
 		<a href="mwly_librarian.php">user info</a><br>
-		<a href="mwly_login.php?action=logout">log out</a>
+		<a href="mwly_login.back.php?action=logout">log out</a>
 	<?php
 	} else {
 	?>
 	<h2>log in</h2>
-	<form name="login" action="mwly_login.php" method="post">
+	<form name="login" action="mwly_login.back.php" method="post">
 		<select name = "login_as">
   		<option value="reader">reader</option>
   		<br>

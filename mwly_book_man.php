@@ -52,53 +52,12 @@ else
 	<br>
 		<a href="mwly_search.php">return</a>
 	<br>
-		<a href="mwly_login.php?action=logout">log out</a>
+		<a href="mwly_login.back.php?action=logout">log out</a>
 </div>
 <div id="result">
-<?php
-if (isset($_POST['post-type'])) {
-	switch ($_POST['post-type']) {
-	case "add_book":
-		$title = trim($_POST['title']);
-		$author = trim($_POST['author']);
-		$callno = trim($_POST['call_no']);
-		$puby = intval($_POST['pub_year']);
-		$puby = $puby == 0 ? "" : $puby ;
-		$lang = trim($_POST['lang']);
-		$lper = intval($_POST['loan_period']);
-		if (!empty($title) && ($lper > 0) && !empty($lang)) {
-			$sql = "insert into book
-				values (
-				  (select max(book_id)+1
-				   from book), 
-				   '$title',
-				   '$author',
-				   '$callno',
-				   $puby,
-				   '$lang',
-				   $lper,
-				   $libraryid)";
-			$stmt = oci_parse($conn, $sql);
-			oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
-		}
-		break;
-	case "del_book":
-		$bookid = intval($_POST['bookid']);
-		if ($bookid > 0) {
-			$sql = "delete from book 
-				where book_id=$bookid";
-			$stmt = oci_parse($conn, $sql);
-			oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
-		}
-		break;
-	}
-}
-?>
-
-
 <div id="displaytwo">
 	<h2>ADD BOOK</h2>
-	<form name="addbook" action="" method="post">
+	<form name="addbook" action="mwly_book_ad.back.php" method="post">
 		<table>		
 			<tr>
 				<td>title:</td>
@@ -131,7 +90,7 @@ if (isset($_POST['post-type'])) {
 </div>
 <div id="displaytwo">
 	<h2>DELETE BOOK</h2>
-	<form name="deletebook" action="" method="post">
+	<form name="deletebook" action="mwly_book_ad.back.php" method="post">
 		<table>
 			<tr>
 				<td>book id:</td>

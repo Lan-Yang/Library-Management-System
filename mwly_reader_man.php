@@ -51,7 +51,7 @@ else
 	<br>
 		<a href="mwly_search.php">return</a>
 	<br>
-		<a href="mwly_login.php?action=logout">log out</a>
+		<a href="mwly_login.back.php?action=logout">log out</a>
 </div>
 <div id="result">
 <?php

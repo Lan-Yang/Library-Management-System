@@ -82,7 +82,7 @@ oci_execute($stmt, OCI_DEFAULT);
 	</table>
 		return to <a href="mwly_search.php">search</a>
 	<br>
-		<a href="mwly_login.php?action=logout">log out</a>
+		<a href="mwly_login.back.php?action=logout">log out</a>
 </div>
 </body>
 </html>

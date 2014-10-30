@@ -61,12 +61,16 @@ $_SESSION['library_name'] = $library_name;
 	?>
 	<h2>log in</h2>
 	<form name="login" action="mwly_login.back.php" method="post">
+		<input type="radio" name="login_as" value="reader" /> reader
+		<input type="radio" name="login_as" value="librarian" /> librarian
+		<br>
+		<!--
 		<select name = "login_as">
   		<option value="reader">reader</option>
   		<br>
   		<option value="librarian">librarian</option>
   		<br>
-		</select>
+		</select>-->
 		<input type="text" name="login_id" />
 		<br>
 		<input type="submit" value="Login" />
@@ -88,36 +92,41 @@ if ((isset($_POST['search_by']) && !empty($_POST['search_by']))
 		<th>Call No.</th>
 		<th>Year</th>
 		<th>Language</th>
-		<th>Status</th>
-		</tr>";
+		<th>Status</th>";
+	if (isset($_SESSION['librarian_id'])) {
+		echo "
+			<th>Sponser</th>
+			<th>Sponsed_Date</th>";
+	}
+	echo "</tr>";
 	$search_by = $_POST['search_by'];
 	$search_val = $_POST['search_val'];
-	$sql = "SELECT book_id, title, author, call_no, pub_year, lang,
-		case when ctime<rtime then 'Available' 
-		    when ctime is null then 'Available'
-		    when ctime>rtime then 'Unavailable'
-		    when rtime is null then 'Unavailable'
-		    else 'N/A'
-		end as status
-		FROM ( select B.*,
-		       (select max(t.trans_time)
-			from check_out c, trans t
-			where c.book_id=B.book_id
-			  and c.trans_id=t.trans_id) as ctime, 
-		       (select max(t.trans_time)
-			from return_back r, trans t
-			where r.book_id=B.book_id
-			  and r.trans_id=t.trans_id) as rtime
-			FROM book B) B0
+	if (isset($_SESSION['librarian_id'])) {
+	$sql = "SELECT b.book_id, b.title, b.author, b.call_no, b.pub_year, 
+	        b.lang, b.is_available, pp.patron_name, pp.pay_for_date
+		      FROM book b
+    LEFT OUTER JOIN
+    (select pf.book_id,p.patron_name,pf.PAY_FOR_DATE  
+    from pay_for pf, patron p
+    where pf.patron_id = p.patron_id) pp  
+    ON b.book_id = pp.book_id
+		where b.$search_by like '%$search_val%'
+		  and b.own_by_library=$lib_id"
+		  ;
+	$num_col = 9;
+	} else {
+	$sql = "SELECT book_id, title, author, call_no, pub_year, lang, is_available
+		FROM book
 		where $search_by like '%$search_val%'
 		  and own_by_library=$lib_id";
-	//echo $sql;
+	$num_col = 7;
+	}
 	$stmt = oci_parse($conn, $sql);
 	oci_execute($stmt, OCI_DEFAULT);
 	while ($res = oci_fetch_row($stmt))
 	{
 		echo "<tr>" ;
-		for ($i=0; $i<7; $i++)
+		for ($i=0; $i<$num_col; $i++)
 			echo "<td>$res[$i]</td>";
 		echo "</tr>";
 	}

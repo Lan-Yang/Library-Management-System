@@ -83,6 +83,10 @@ else
 				<td>loan period:</td>
 				<td><input type="text" name="loan_period" /></td>
 			</tr>
+			<tr>
+				<td>patron id:</td>
+				<td><input type="text" name="patron_id" /></td>
+			</tr>
 		</table>
 		<button type="submit" name="post-type" value="add_book">
 		Submit</button>

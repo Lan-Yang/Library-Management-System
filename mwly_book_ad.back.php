@@ -25,16 +25,30 @@ case "add_book":
 	$puby = $puby == 0 ? "" : $puby ;
 	$lang = trim($_POST['lang']);
 	$lper = intval($_POST['loan_period']);
+	$pid = intval($_POST['patron_id']);
+	if (!empty($pid)) {
+		$sql = "select * from sponsor_of
+			where patron_id=$pid
+			and library_id={$_SESSION['library_id']}";
+		$stmt = oci_parse($conn, $sql);
+		oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		if (!oci_fetch_row($stmt))
+			error_return("No such patron!", $nexturl);	
+	}
 	if (empty($title))
 		error_return("Must have a title!", $nexturl);
 	if ($lper <= 0)
 		error_return("Loan period cannot lower than 1!", $nexturl);
 	if (empty($lang))
 		error_return("Language cannot be empty!", $nexturl);
+	$sql = "select max(book_id)+1
+			 from book";
+	$stmt = oci_parse($conn, $sql);
+	oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+	$bookid = intval(oci_fetch_row($stmt)[0]);
 	$sql = "insert into book
 		values (
-			(select max(book_id)+1
-			 from book), 
+			 $bookid, 
 			 '$title',
 			 '$author',
 			 '$callno',
@@ -45,10 +59,21 @@ case "add_book":
 			 1)";
 	$stmt = oci_parse($conn, $sql);
 	$ret = oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
-	if ($ret)
+	if (!$ret)
+		error_return("Add book fail!", $nexturl);	
+	if (empty($pid))
 		error_return("Add book success", $nexturl);	
-	else
-		error_return("Add book fail!", $nexturl);
+		$sql = "insert into pay_for
+		values (			
+			$pid,
+			$bookid, 
+			SYSDATE)";
+		$stmt = oci_parse($conn, $sql);
+		$ret = oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+		if ($ret)
+			error_return("Add book success", $nexturl);	
+		else
+			error_return("Add book fail!", $nexturl);	
 	break;
 case "del_book":
 	$bookid = intval($_POST['bookid']);

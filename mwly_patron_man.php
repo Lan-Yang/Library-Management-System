@@ -59,13 +59,14 @@ else
 if (isset($_POST['post-type'])) {
 	switch ($_POST['post-type']) {
 	case "search_patron":
-		$sql = "select p.patron_id, p.patron_name, p.patron_intro
-			from patron p 
-			left join sponsor_of s
-			on s.library_id={$_SESSION['library_id']}
-			    and p.patron_id=s.patron_id 
-			where p.{$_POST['search_by']}";
-		
+		$sql = "SELECT p.patron_id, 
+			       p.patron_name, 
+			       p.patron_intro       
+			FROM   patron p
+			left join sponsor_of s 
+			ON s.PATRON_ID = p.PATRON_ID
+			where s.library_id = {$_SESSION['library_id']}
+			  and p.{$_POST['search_by']}";		
 		if ($_POST['search_by']=='patron_id') {
 			$patron_id = intval($_POST['search_val']);
 			$sql .= "=$patron_id";
@@ -73,7 +74,6 @@ if (isset($_POST['post-type'])) {
 			$patron_name = trim($_POST['search_val']);
 			$sql .= " like '%$patron_name%'";
 		}
-		echo $sql;
 		$stmt = oci_parse($conn, $sql);
 		oci_execute($stmt, OCI_DEFAULT);
 		$seach_flag = 1;

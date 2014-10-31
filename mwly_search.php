@@ -61,16 +61,11 @@ $_SESSION['library_name'] = $library_name;
 	?>
 	<h2>log in</h2>
 	<form name="login" action="mwly_login.back.php" method="post">
-		<input type="radio" name="login_as" value="reader" /> reader
-		<input type="radio" name="login_as" value="librarian" /> librarian
+		<input type="radio" name="login_as" value="reader" /> 
+		reader
+		<input type="radio" name="login_as" value="librarian" /> 
+		librarian
 		<br>
-		<!--
-		<select name = "login_as">
-  		<option value="reader">reader</option>
-  		<br>
-  		<option value="librarian">librarian</option>
-  		<br>
-		</select>-->
 		<input type="text" name="login_id" />
 		<br>
 		<input type="submit" value="Login" />
@@ -102,24 +97,28 @@ if ((isset($_POST['search_by']) && !empty($_POST['search_by']))
 	$search_by = $_POST['search_by'];
 	$search_val = $_POST['search_val'];
 	if (isset($_SESSION['librarian_id'])) {
-	$sql = "SELECT b.book_id, b.title, b.author, b.call_no, b.pub_year, 
-	        b.lang, b.is_available, pp.patron_name, pp.pay_for_date
-		      FROM book b
-    LEFT OUTER JOIN
-    (select pf.book_id,p.patron_name,pf.PAY_FOR_DATE  
-    from pay_for pf, patron p
-    where pf.patron_id = p.patron_id) pp  
-    ON b.book_id = pp.book_id
+		$sql = "SELECT b.book_id, b.title, b.author, 
+		b.call_no, b.pub_year, b.lang, 
+		case when b.is_available=1 then 'Available'
+		else 'Unavailable' end, 
+		pp.patron_name, pp.pay_for_date
+		FROM book b
+    		LEFT OUTER JOIN
+    		(select pf.book_id,p.patron_name,pf.PAY_FOR_DATE  
+    		from pay_for pf, patron p
+    		where pf.patron_id = p.patron_id) pp  
+    		ON b.book_id = pp.book_id
 		where b.$search_by like '%$search_val%'
-		  and b.own_by_library=$lib_id"
-		  ;
-	$num_col = 9;
+		  and b.own_by_library=$lib_id";
+		$num_col = 9;
 	} else {
-	$sql = "SELECT book_id, title, author, call_no, pub_year, lang, is_available
+		$sql = "SELECT book_id, title, author, call_no, pub_year, lang, 
+		case when is_available=1 then 'Available' 
+		     else 'Unavailable' end
 		FROM book
 		where $search_by like '%$search_val%'
 		  and own_by_library=$lib_id";
-	$num_col = 7;
+		$num_col = 7;
 	}
 	$stmt = oci_parse($conn, $sql);
 	oci_execute($stmt, OCI_DEFAULT);
@@ -127,7 +126,7 @@ if ((isset($_POST['search_by']) && !empty($_POST['search_by']))
 	{
 		echo "<tr>" ;
 		for ($i=0; $i<$num_col; $i++)
-			echo "<td>$res[$i]</td>";
+			echo "<td>{$res[$i]}</td>";
 		echo "</tr>";
 	}
 }

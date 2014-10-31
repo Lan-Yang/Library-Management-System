@@ -45,7 +45,8 @@ case "add_book":
 			 from book";
 	$stmt = oci_parse($conn, $sql);
 	oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
-	$bookid = intval(oci_fetch_row($stmt)[0]);
+	$res = oci_fetch_row($stmt);
+	$bookid = intval($res[0]);
 	$sql = "insert into book
 		values (
 			 $bookid, 

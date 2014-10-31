@@ -56,6 +56,8 @@ if (!isset($linfo_v))
 	<br>
 		<a href="mwly_reader_man.php">add/delete/find reader</a>
 	<br>
+		<a href="mwly_patron_man.php">add/delete/find patron</a>
+	<br>
 		<a href="mwly_search.php">return</a>
 	<br>
 		<a href="mwly_login.back.php?action=logout">log out</a>

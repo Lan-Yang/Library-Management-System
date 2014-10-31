@@ -47,6 +47,8 @@ else
 	<br>
 		<a href="mwly_book_man.php">add/delete book</a>
 	<br>
+		<a href="mwly_patron_man.php">add/delete/find patron</a>
+	<br>
 		<a href="mwly_book_trace.php">trace book</a>
 	<br>
 		<a href="mwly_search.php">return</a>

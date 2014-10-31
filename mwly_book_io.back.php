@@ -92,7 +92,6 @@ if (isset($_POST['post-type']) && !empty($_POST['post-type'])) {
 		break;
 	case "return":
 		// check book status
-		echo $available;
 		if ($available != 0) {
 			error_return("Book not borrowed!", $nexturl);
 		}

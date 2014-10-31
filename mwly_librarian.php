@@ -58,7 +58,7 @@ if (!isset($linfo_v))
 <div id="result">
 <div id="displaytwo">
 	<h2>CHECK OUT</h2>
-	<form name="checkout" action="mwly_book_io.php" method="post">
+	<form name="checkout" action="mwly_book_io.back.php" method="post">
 		<table>
 			<tr>
 				<td>book id:</td>
@@ -75,7 +75,7 @@ if (!isset($linfo_v))
 </div>
 <div id="displaytwo">
 	<h2>RETURN</h2>
-	<form name="return" action="mwly_book_io.php" method="post">
+	<form name="return" action="mwly_book_io.back.php" method="post">
 		<table>
 			<tr>
 				<td>book id:</td>

@@ -13,7 +13,6 @@ $linfo_k = array("id:", "name:");
 $sql = "select * from librarian 
 	where librarian_id=" . $_SESSION['librarian_id'] .
 	" and library_id=" . $_SESSION['library_id'];
-//echo $sql;
 $stmt = oci_parse($conn, $sql);
 oci_execute($stmt, OCI_DEFAULT);
 if ($res = oci_fetch_row($stmt))
@@ -60,14 +59,19 @@ else
 if (isset($_POST['post-type'])) {
 	switch ($_POST['post-type']) {
 	case "search_patron":
-		$sql = "select p. from patron p, sponsor_of s 
-			where s.library_id={$_SESSION['library_id']}
-			and p.patron_id=s.patron_id
-			and p.".$_POST['search_by'];
-		if ($_POST['search_by']=='patron_id')
-			$sql .= "=".intval($_POST['search_val']);
-		else
-			$sql .= " like '%".trim($_POST['search_val'])."%'";
+		$sql = "select p.patron_id, p.patron_name, p.patron_intro
+			from patron p 
+			left outer join sponsor_of s
+			on s.library_id={$_SESSION['library_id']}
+			    and p.patron_id=s.patron_id 
+			where p.{$_POST['search_by']}";
+		if ($_POST['search_by']=='patron_id') {
+			$patron_id = intval($_POST['search_val']);
+			$sql .= "=$patron_id";
+		} else {
+			$patron_name = trim($_POST['search_val']);
+			$sql .= " like '%$patron_name%'";
+		}
 		$stmt = oci_parse($conn, $sql);
 		oci_execute($stmt, OCI_DEFAULT);
 		$seach_flag = 1;
@@ -80,12 +84,12 @@ if (isset($_POST['post-type'])) {
 	<form name="add_patron" action="mwly_patron_ad.back.php" method="post">
 		<table>
 			<tr>
-				<td>name:</td>
-				<td><input type="text" name="patron_name" /></td>
+			<td>name:</td>
+			<td><input type="text" name="patron_name" /></td>
 			</tr>
 			<tr>
-				<td>info:</td>
-				<td><input type="text" name="patron_info" /></td>
+			<td>info:</td>
+			<td><input type="text" name="patron_info" /></td>
 			</tr>
 			<tr>
 		</table>
@@ -98,8 +102,8 @@ if (isset($_POST['post-type'])) {
 	<form name="del_patron" action="mwly_patron_ad.back.php" method="post">
 		<table>
 			<tr>
-				<td>patron id:</td>
-				<td><input type="text" name="patron_id" /></td>
+			<td>patron id:</td>
+			<td><input type="text" name="patron_id" /></td>
 			</tr>
 		</table>
 		<button type="submit" name="post-type" value="del_patron">
@@ -109,13 +113,13 @@ if (isset($_POST['post-type'])) {
 </div>
 <div id = "search">
 	<form name="search_patron" action="" method="post">
-	SEARCH READER:
+	Search Patron:
 		<select name="search_by">
   		<option value="patron_id">patron id</option>
   		<option value="patron_name">patron name</option>
 		</select>
 		<input type="text" name="search_val" />
-		<button type="submit" name="post-type" value="search_reader">
+		<button type="submit" name="post-type" value="search_patron">
 		Search</button>
 	</form>
 </div>

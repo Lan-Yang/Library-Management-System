@@ -109,7 +109,8 @@ if ((isset($_POST['search_by']) && !empty($_POST['search_by']))
     		where pf.patron_id = p.patron_id) pp  
     		ON b.book_id = pp.book_id
 		where b.$search_by like '%$search_val%'
-		  and b.own_by_library=$lib_id";
+		  and b.own_by_library=$lib_id
+		order by b.$search_by";
 		$num_col = 9;
 	} else {
 		$sql = "SELECT book_id, title, author, call_no, pub_year, lang, 
@@ -117,7 +118,8 @@ if ((isset($_POST['search_by']) && !empty($_POST['search_by']))
 		     else 'Unavailable' end
 		FROM book
 		where $search_by like '%$search_val%'
-		  and own_by_library=$lib_id";
+		  and own_by_library=$lib_id
+		order by $search_by";
 		$num_col = 7;
 	}
 	$stmt = oci_parse($conn, $sql);
